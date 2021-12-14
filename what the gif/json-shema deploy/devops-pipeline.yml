@@ -1,0 +1,27 @@
+
+# var
+# .\rclone.exe sync 'C:/git/samna.docs/docs/private/api-output/schema' azstorage:samna --azureblob-sas-url 'https://ntpnimtechschemasa.blob.core.windows.net/samna?sv=2020-08-04&st=2021-12-11T22%3A24%3A01Z&se=2021-12-12T22%3A24%3A01Z&sr=c&sp=racwdl&sig=gyE6mIxEkNc0gk1A5BELZ7Zrrf14n9ALl1Rhj11rUnI%3D' --exclude *.example.json* -i
+variables:
+  storageAccount:schemastorageexample
+  optionSP:someServicePrinicipal
+  optionSAS:SASURI
+  optionAccountKey:Key
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest' # set to windows-latest or another Windows vmImage for Windows builds
+
+stages:
+  - stage: install_rclone
+    displayname: download and install rclone
+    steps:
+    - bash: curl https://rclone.org/install.sh | sudo bash
+
+  - stage: serviceprincipal
+    displayname: Use rclone via servicePrincipal
+    dependson: install_rclone
+    steps: 
+    - bash: rclone -h
+
+# - bash: ls 
